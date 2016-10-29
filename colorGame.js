@@ -1,12 +1,29 @@
-var colors = genRandomColor(6);
+var colors = genRandomColors(6);
 
 var squares = document.querySelectorAll(".square");
 var pickedColor = pickColor();
 var colorDisplay = document.getElementById("colorDisplay");
 var messageDisplay = document.querySelector("#message");
 var header = document.querySelector("h1");
+var resetButton = document.querySelector("#reset");
 
 colorDisplay.textContent = pickedColor;
+
+resetButton.addEventListener("click", function(){ 
+	// generate all new colors
+	colors = genRandomColors(6);
+	// pick new random coolor
+	pickedColor = pickColor();
+	// change colorDisplay to match new pickedColor
+	colorDisplay.textContent = pickedColor;
+	// change square colors
+	for(var i = 0; i < squares.length; i++){
+		squares[i].style.background = colors[i];
+	}
+
+	resetButton.textContent = "New Color";
+	header.style.background = "#232323";
+});
 
 for(var i = 0; i < squares.length; i++){
 	squares[i].style.background = colors[i];
@@ -17,6 +34,7 @@ for(var i = 0; i < squares.length; i++){
 			messageDisplay.textContent = "Correct";
 			changeColors();
 			header.style.background = pickedColor;
+			resetButton.textContent = "Play Again";
 		}else {
 			this.style.background = "#232323";
 			messageDisplay.textContent = "Try Again";
@@ -24,6 +42,7 @@ for(var i = 0; i < squares.length; i++){
 	});
 }
 
+// change all squares to the selected color
 function changeColors() {
 	for(var i = 0; i < squares.length; i++){
 		squares[i].style.background = pickedColor;
@@ -31,12 +50,14 @@ function changeColors() {
 
 }
 
+// pick a random color from the available choices
 function pickColor() {
 	var randomColor = Math.floor(Math.random() * colors.length);
 	return colors[randomColor];
 }
 
-function genRandomColor(num){
+// generate new list of colors
+function genRandomColors(num){
 	var colorArray = [];
 	for(var i=0; i<num; i++){
 		colorArray.push(randomColor())
@@ -44,6 +65,7 @@ function genRandomColor(num){
 	return colorArray;
 }
 
+// generate random rgb color value
 function randomColor() {
 	// gen red value
 	var r = Math.floor(Math.random() * 256);
